@@ -1,7 +1,9 @@
 ﻿/**
- * 缓存类
- * 作者：李华顺 2008年5月15日
- * 版本：0.1
+ * jCaches - 数据缓存类
+ * Author:   李华顺[ http://huacn.blogbus.com]
+ * Version: 0.1
+ * Project:   http://code.google.com/p/jcaches/
+ * License:  GNU General Public License v3 [http://www.gnu.org/licenses/gpl.html]
  * @param {Number} cacheLength 最大限制存几个缓存项
  * @param {Boolean} isDebug 是否开启调试，这项只可以在Firefox下设true
  */
