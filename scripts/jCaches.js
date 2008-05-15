@@ -1,6 +1,7 @@
 ﻿/**
  * 缓存类
  * 作者：李华顺 2008年5月15日
+ * 版本：0.1
  * @param {Number} cacheLength 最大限制存几个缓存项
  * @param {Boolean} isDebug 是否开启调试，这项只可以在Firefox下设true
  */
