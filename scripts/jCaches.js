@@ -6,10 +6,14 @@
  * License: GNU General Public License v3 [http://www.gnu.org/licenses/gpl.html]
  * @param {Number} cacheLength 最大限制存几个缓存项
  * @param {Boolean} isDebug 是否开启调试，这项只可以在Firefox下设true
+ * @param {Array[JSON Object]} initDatas 初始化 cacheData的数据,此参数用载入旧的数据
  */
-var jCaches = function(cacheLength,isDebug){
+var jCaches = function(cacheLength,isDebug,initDatas){
 
-	var cacheData = [];
+    var cacheData = [];
+    if(initDatas != undefined && initDatas != null){
+	    cacheData = initDatas;	    
+	}
 	
 	/* 自增,只会越来越大，用在调用者不传ID的情况做唯一编号 */
 	var autoIncreaseID = 0;
@@ -160,5 +164,9 @@ var jCaches = function(cacheLength,isDebug){
 	        callback(cacheData[i].value);
 	    }
 	}
+	
+	refreshPublicMemberValue(this);
 
 };
+
+
