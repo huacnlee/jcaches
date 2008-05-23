@@ -1,15 +1,28 @@
 ﻿/**
  * jCaches - 数据缓存类
- * Author:   李华顺[ http://huacn.blogbus.com]
- * Version: 0.1
- * Project:   http://code.google.com/p/jcaches/
- * License:  GNU General Public License v3 [http://www.gnu.org/licenses/gpl.html]
+ * Author:  李华顺[http://huacn.blogbus.com]<huacnlee@gmail.com>
+ * Version: 0.2
+ * Project: http://code.google.com/p/jcaches/
+ * License: GNU General Public License v3 [http://www.gnu.org/licenses/gpl.html]
  * @param {Number} cacheLength 最大限制存几个缓存项
  * @param {Boolean} isDebug 是否开启调试，这项只可以在Firefox下设true
  */
 var jCaches = function(cacheLength,isDebug){
-		
-	cacheData = [{}];
+
+	cacheData = [];
+	
+	/**
+	 * 目前已存放的个数
+	 */
+	this.length = 0;
+	
+	/**
+	 * 得到目前的缓存个数
+	 */
+	this.size = function(){
+	    this.length = cacheData.length;
+	    return this.length;
+	}
 	
 	/**
 	 * 添加
@@ -43,6 +56,8 @@ var jCaches = function(cacheLength,isDebug){
 		
 		/* 向缓存数据添加一项 */
 		cacheData.push({id:id,value : value});
+	
+	    this.size();	
 	}
 	
 	/**
@@ -77,7 +92,6 @@ var jCaches = function(cacheLength,isDebug){
 				return item.value;
 			}
 		}
-		
 		return null;
 	}
 	
@@ -86,8 +100,18 @@ var jCaches = function(cacheLength,isDebug){
 	 */
 	this.clear = function(){
 		cacheData =  new Array();
+		
+		this.size();
+	}
+	
+	/**
+	 * 遍历Cache列表
+	 * @param {event} callback 回调函数,带有一个参数返回，是当前Cache的value
+	 */
+	this.each = function(callback){
+	    for(var i = 0; i < cacheData.length; i++){
+	        callback(cacheData[i].value);
+	    }
 	}
 
 };
-
-
