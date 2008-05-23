@@ -9,7 +9,25 @@
  */
 var jCaches = function(cacheLength,isDebug){
 
-	cacheData = [];
+	var cacheData = [];
+	
+	/* 自增,只会越来越大，用在调用者不传ID的情况做唯一编号 */
+	var autoIncreaseID = 0;
+	
+	/**
+	 * 刷新公开的变量的值
+	 */
+	var refreshPublicMemberValue = function(obj){	
+	    obj.length = obj.size();
+	    obj.datas = cacheData;
+	}
+	
+	/** 以下是公开的成员 **/
+	
+	/**
+	 * 缓存的数据数组列表，只读，修改它不会影响原数据
+	 */
+	this.datas = [];
 	
 	/**
 	 * 目前已存放的个数
@@ -26,10 +44,16 @@ var jCaches = function(cacheLength,isDebug){
 	
 	/**
 	 * 添加
-	 * @param {String} id 标识ID
+	 * @param {String} id 标识ID,自动编号请传null
 	 * @param {Object} value 值
 	 */
 	this.add = function(id, value){
+        
+        /* 处理只有一个参数的请 */
+        if(id == null){
+            autoIncreaseID ++;
+            id = autoIncreaseID;            
+        }
 
 		/* 检查是否存在，有的话就不存 */
 		if (this.exist(id)) {
@@ -57,7 +81,28 @@ var jCaches = function(cacheLength,isDebug){
 		/* 向缓存数据添加一项 */
 		cacheData.push({id:id,value : value});
 	
-	    this.size();	
+	    //refresh
+	    refreshPublicMemberValue(this);
+
+        return id;
+	}
+	
+	/**
+	 * 根据“标识ID”删除缓存信息
+	 * @param {String} id 标识ID
+	 */
+	this.remove = function(id){
+	    for(var i = 0; i < this.length ; i++){
+	        if(cacheData[i].id == id){
+	            cacheData.splice(i,1);
+	            
+	            //refresh
+	            refreshPublicMemberValue(this);
+	    
+	            return ;
+	        }
+	    }
+	    
 	}
 	
 	/**
@@ -99,9 +144,11 @@ var jCaches = function(cacheLength,isDebug){
 	 * 清空缓存
 	 */
 	this.clear = function(){
+	
 		cacheData =  new Array();
 		
-		this.size();
+		//refresh
+	    refreshPublicMemberValue(this);
 	}
 	
 	/**
