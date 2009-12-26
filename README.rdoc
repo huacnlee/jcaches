@@ -1,0 +1,42 @@
+=jCaches
+
+本项目是通过数组变量的方式实现简单的数据缓存功能，你可以设定最大缓存空间（个数），当然实例化后可以同时存在很多个缓存对象。
+
+==Members
+
+  1. new jCaches(cacheLength Number,isDebug Boolean,initDatas ArrayObject?) - 构造方法，创建一个缓存实例，参数：cacheLength 允许本实例中最大的缓存值个数，isDebug 是否开启调试(只支持Firefox + Firebug, initDatas 初始化 cacheData的数据,此参数用载入旧的数据)
+  2. datas 属性,缓存的数据数组列表，只读，修改它不会影响原数据
+  3. length 属性，目前已存放的个数
+  4. size() 方法,得到目前的缓存个数
+  5. add(id String,value Object) - 添加缓存,参数：id 需要是唯一的，value
+  6. remove(id String) - 根据“标识ID”删除缓存信息，参数：id 标识ID
+  7. exist(id String) - 检查缓存项是否存在，参数：id String?要检查的缓存编号
+  8. get(id String) - 通过 id 取得缓存值,返回值是原来的对象类型，不用再次转换
+  9. clear() - 清除此实例中的所有缓存
+  10. each(callback Function) - 遍历Cache列表, callback 回调函数,带有一个参数返回，是当前Cache的value 
+
+==Example
+
+  var c = new jCaches(20,true);
+  var cacheId = "mydata-1";
+  c.clear();
+  
+  var dataList = {};
+  
+  $("#btnLoad").click(function(){ 
+    if(c.exist(cacheId)){
+      result = c.get(cacheId);                
+    }
+    else{
+      $.ajax({
+        url:"data.html",
+        type : "get",
+        dataType:"json",
+        success: function(result){
+          alert(result);
+          dataList = result;
+          c.add(cacheId,dataList);
+        }
+      });
+    }
+  });
