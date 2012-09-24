@@ -1,0 +1,83 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>jCaches by huacnlee</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>jCaches</h1>
+        <p>client side cache with Javascript</p>
+
+        <p class="view"><a href="https://github.com/huacnlee/jcaches">View the Project on GitHub <small>huacnlee/jcaches</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/huacnlee/jcaches/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/huacnlee/jcaches/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/huacnlee/jcaches">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>jCaches</h1>
+
+<p>本项目是通过数组变量的方式实现简单的数据缓存功能，你可以设定最大缓存空间（个数），当然实例化后可以同时存在很多个缓存对象。</p>
+
+<h2>Features</h2>
+
+<ol>
+<li>new jCaches(cacheLength Number,isDebug Boolean,initDatas ArrayObject?) - 构造方法，创建一个缓存实例，参数：cacheLength 允许本实例中最大的缓存值个数，isDebug 是否开启调试(只支持Firefox + Firebug, initDatas 初始化 cacheData的数据,此参数用载入旧的数据)</li>
+<li>datas 属性,缓存的数据数组列表，只读，修改它不会影响原数据</li>
+<li>length 属性，目前已存放的个数</li>
+<li>size() 方法,得到目前的缓存个数</li>
+<li>add(id String,value Object) - 添加缓存,参数：id 需要是唯一的，value</li>
+<li>remove(id String) - 根据“标识ID”删除缓存信息，参数：id 标识ID</li>
+<li>exist(id String) - 检查缓存项是否存在，参数：id String?要检查的缓存编号</li>
+<li>get(id String) - 通过 id 取得缓存值,返回值是原来的对象类型，不用再次转换</li>
+<li>clear() - 清除此实例中的所有缓存</li>
+<li>each(callback Function) - 遍历Cache列表, callback 回调函数,带有一个参数返回，是当前Cache的value </li>
+</ol><h3>Example</h3>
+
+<div class="highlight"><pre><span class="kd">var</span> <span class="nx">c</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">jCaches</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span><span class="kc">true</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">cacheId</span> <span class="o">=</span> <span class="s2">"mydata-1"</span><span class="p">;</span>
+<span class="nx">c</span><span class="p">.</span><span class="nx">clear</span><span class="p">();</span>
+
+<span class="kd">var</span> <span class="nx">dataList</span> <span class="o">=</span> <span class="p">{};</span>
+
+<span class="nx">$</span><span class="p">(</span><span class="s2">"#btnLoad"</span><span class="p">).</span><span class="nx">click</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span> 
+  <span class="k">if</span><span class="p">(</span><span class="nx">c</span><span class="p">.</span><span class="nx">exist</span><span class="p">(</span><span class="nx">cacheId</span><span class="p">)){</span>
+    <span class="nx">result</span> <span class="o">=</span> <span class="nx">c</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="nx">cacheId</span><span class="p">);</span>                
+  <span class="p">}</span>
+  <span class="k">else</span><span class="p">{</span>
+    <span class="nx">$</span><span class="p">.</span><span class="nx">ajax</span><span class="p">({</span>
+      <span class="nx">url</span><span class="o">:</span><span class="s2">"data.html"</span><span class="p">,</span>
+      <span class="nx">type</span> <span class="o">:</span> <span class="s2">"get"</span><span class="p">,</span>
+      <span class="nx">dataType</span><span class="o">:</span><span class="s2">"json"</span><span class="p">,</span>
+      <span class="nx">success</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">result</span><span class="p">){</span>
+        <span class="nx">alert</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span>
+        <span class="nx">dataList</span> <span class="o">=</span> <span class="nx">result</span><span class="p">;</span>
+        <span class="nx">c</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">cacheId</span><span class="p">,</span><span class="nx">dataList</span><span class="p">);</span>
+      <span class="p">}</span>
+    <span class="p">});</span>
+  <span class="p">}</span>
+<span class="p">});</span>
+</pre></div>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/huacnlee">huacnlee</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
